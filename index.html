@@ -265,11 +265,12 @@ body::before{
 
     <div class="report-grid" id="report-sections"></div>
 
-    <div class="action-row no-print">
+    <div class="action-row no-print" id="report-actions">
       <a id="btn-open" class="btn btn-primary" href="#" target="_blank" rel="noreferrer">Open full report</a>
-      <button class="btn btn-secondary" onclick="restart()">Start again</button>
+      <button id="btn-pdf" class="btn btn-secondary" onclick="window.print()" style="display:none;">Print / Save as PDF</button>
+      <button id="btn-restart" class="btn btn-secondary" onclick="restart()">Start again</button>
     </div>
-    <div class="note no-print">Opens in a new tab — ideal for printing or saving as PDF.</div>
+    <div class="note no-print" id="report-note">Opens in a new tab — ideal for printing or saving as PDF.</div>
   </div>
 </div>
 
@@ -601,6 +602,13 @@ function buildReport(){
     </div>
   `;
 
+  const pdfBtn = document.getElementById('btn-pdf');
+  const restartBtn = document.getElementById('btn-restart');
+  const note = document.getElementById('report-note');
+  if (pdfBtn) pdfBtn.style.display = 'none';
+  if (restartBtn) restartBtn.style.display = 'inline-flex';
+  if (note) note.textContent = 'Opens in a new tab — ideal for printing or saving as PDF.';
+
   setReportLink(scores, dominant, secondary);
 }
 
@@ -635,6 +643,14 @@ function renderStandaloneReport(name, dom, sec, scores){
   badge.style.color = meta.hex;
   badge.style.border = `1px solid ${meta.hex}22`;
   document.getElementById('tagline').textContent = `${profile.title} — ${profile.tagline} Your secondary preference is ${secondaryMeta.label}.`;
+
+  const pdfBtn = document.getElementById('btn-pdf');
+  const restartBtn = document.getElementById('btn-restart');
+  const note = document.getElementById('report-note');
+  if (pdfBtn) pdfBtn.style.display = 'inline-flex';
+  if (restartBtn) restartBtn.style.display = 'none';
+  if (note) note.textContent = 'Use the Print / Save as PDF button to export this report.';
+
   showScreen('report-screen');
   setTimeout(()=>{
     setBar('V', scores.V); setBar('A', scores.A); setBar('K', scores.K);
